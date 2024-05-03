@@ -9,6 +9,23 @@ public static class Misc
     {
         return (long)high.AsUInt() << sizeof(int) * 0x08 | low.AsUInt();
     }
+
+    public static unsafe double Entropy(byte[] data)
+    {
+        int* a = stackalloc int[0x100];
+        int* b = a + 0x100;
+
+        for (int i = data.Length; --i >= 0;)
+            a[data[i]]++;
+
+        double h = 0.00;
+        double c = data.Length;
+        while (--b >= a)
+            if (*b > 0)
+                h += *b * Math.Log(*b / c, 2.00);
+
+        return -h / c;
+    }
 }
 
 public static class Extensions
@@ -17,9 +34,32 @@ public static class Extensions
     {
         string dump = string.Empty;
 
-        foreach(var item in bytes)
+        foreach (var item in bytes)
         {
             dump += $"{item:X2} ";
+        }
+
+        return dump;
+    }
+
+    public static string AsHtmlHexDump(this byte[] bytes)
+    {
+        string dump = string.Empty;
+
+        foreach (var item in bytes)
+        {
+            if (item == 0x00)
+            {
+                dump += $"<span style=\"color: #aaaaaa;\">{item:X2}</span> ";
+            }
+            else if (item > 0x7F)
+            {
+                dump += $"<span style=\"color: #00{item:X2}FF;\">{item:X2}</span> ";
+            }
+            else
+            {
+                dump += $"<span style=\"color: #0097ff;\">{item:X2}</span> ";
+            }
         }
 
         return dump;
@@ -31,7 +71,7 @@ public static class Extensions
 
         foreach (char item in bytes)
         {
-            if(char.IsLetterOrDigit(item) || char.IsPunctuation(item) || char.IsSymbol(item))
+            if (char.IsLetterOrDigit(item) || char.IsPunctuation(item) || char.IsSymbol(item))
             {
                 dump += item;
             }
@@ -68,7 +108,7 @@ public static class Extensions
     }
     public static string AsHex(this short num)
     {
-        byte[] bytes = [..BitConverter.GetBytes(num).Reverse()];
+        byte[] bytes = [.. BitConverter.GetBytes(num).Reverse()];
 
         return "0x" + Convert.ToHexString(bytes);
     }
@@ -92,32 +132,44 @@ public static class Extensions
     }
     public static short AsShort(this byte[] bytes)
     {
-        if (bytes == null || bytes.Length == 0)
+        if (bytes == null || bytes.Length < 2)
             return 0;
 
         return BitConverter.ToInt16(bytes);
     }
     public static ushort AsUShort(this byte[] bytes)
     {
-        if (bytes == null || bytes.Length == 0)
+        if (bytes == null || bytes.Length < 2)
             return 0;
 
         return BitConverter.ToUInt16(bytes);
     }
     public static int AsInt(this byte[] bytes)
     {
+        if (bytes == null || bytes.Length < 4)
+            return 0;
+
         return BitConverter.ToInt32(bytes);
     }
     public static uint AsUInt(this byte[] bytes)
     {
+        if (bytes == null || bytes.Length < 4)
+            return 0;
+
         return BitConverter.ToUInt32(bytes);
     }
     public static long AsLong(this byte[] bytes)
     {
+        if (bytes == null || bytes.Length < 8)
+            return 0;
+
         return BitConverter.ToInt64(bytes);
     }
     public static ulong AsULong(this byte[] bytes)
     {
+        if (bytes == null || bytes.Length < 8)
+            return 0;
+
         return BitConverter.ToUInt64(bytes);
     }
     public static byte[] AsBytes(this int num)
@@ -126,6 +178,6 @@ public static class Extensions
     }
     public static byte[] AsBytes(this uint num)
     {
-        return [..BitConverter.GetBytes(num)];
+        return [.. BitConverter.GetBytes(num)];
     }
 }

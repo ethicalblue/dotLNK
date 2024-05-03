@@ -119,7 +119,7 @@ public sealed partial class WindowsShortcut
 
         public sealed class CreationTime
         {
-            public static DateTime DateTime => DateTime.FromFileTime(Misc.AsLong(ValueLow, ValueHigh));
+            public static DateTime DateTimeValue() { try { return DateTime.FromFileTime(Misc.AsLong(ValueLow, ValueHigh)); } catch (Exception) { return DateTime.MinValue; } }
             public static bool IsZero => Misc.AsLong(ValueLow, ValueHigh) == 0x0000000000000000;
             private static int Offset => 0x0000001C;
             private static int Size => sizeof(int) + sizeof(int);
@@ -129,7 +129,7 @@ public sealed partial class WindowsShortcut
 
         public sealed class AccessTime
         {
-            public static DateTime DateTime => DateTime.FromFileTime(Misc.AsLong(ValueLow, ValueHigh));
+            public static DateTime DateTimeValue() { try { return DateTime.FromFileTime(Misc.AsLong(ValueLow, ValueHigh)); } catch (Exception) { return DateTime.MinValue; } }
             public static bool IsZero => Misc.AsLong(ValueLow, ValueHigh) == 0x0000000000000000;
             private static int Offset => 0x00000024;
             private static int Size => sizeof(int) + sizeof(int);
@@ -139,7 +139,7 @@ public sealed partial class WindowsShortcut
 
         public sealed class WriteTime
         {
-            public static DateTime DateTime => DateTime.FromFileTime(Misc.AsLong(ValueLow, ValueHigh));
+            public static DateTime DateTimeValue() { try { return DateTime.FromFileTime(Misc.AsLong(ValueLow, ValueHigh)); } catch (Exception) { return DateTime.MinValue; } }
             public static bool IsZero => Misc.AsLong(ValueLow, ValueHigh) == 0x0000000000000000;
             private static int Offset => 0x0000002C;
             private static int Size => sizeof(int) + sizeof(int);

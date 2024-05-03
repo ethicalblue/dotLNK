@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:dotLNK"
         mc:Ignorable="d"
         Title="dotLNK" MinHeight="450" MinWidth="800" Height="450" Width="800"
-        Background="Black" Foreground="WhiteSmoke" FontSize="17"
-        FontFamily="Microsoft Sans Serif"
+        Background="Black" Foreground="#EEFFFF" FontSize="17"
+        FontFamily="Segoe UI" FontWeight="SemiBold"
         WindowStartupLocation="CenterScreen" Icon="Images/ethical.ico"
-        WindowStyle="None"  MouseDown="Window_MouseDown" BorderThickness="0"
+        WindowStyle="SingleBorderWindow"  MouseDown="Window_MouseDown" BorderThickness="0"
         Loaded="Window_Loaded">
-    <Grid>
+    <Grid Margin="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="64" />
@@ -21,12 +21,12 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <TabControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" MouseDown="TabControl_MouseDown">
+        <TabControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" MouseDown="TabControl_MouseDown" BorderBrush="#333333" BorderThickness="2">
             <TabItem>
                 <TabItem.Header>
                     Static Analysis
                 </TabItem.Header>
-                <Grid Margin="8">
+                <Grid Margin="4">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>

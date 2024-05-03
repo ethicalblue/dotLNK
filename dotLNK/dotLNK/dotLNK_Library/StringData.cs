@@ -8,6 +8,9 @@ public sealed partial class WindowsShortcut
     {
         public static List<(string, string)> Items()
         {
+            if (ShellLinkHeader.HeaderSize.IsValid == false)
+                return [];
+
             List<(string, string)> dataList = [];
 
             int index = LinkInfo.Offset + (int)LinkInfo.LinkInfoSize.ValueAsUInt;

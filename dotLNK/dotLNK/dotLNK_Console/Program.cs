@@ -12,13 +12,15 @@ internal class Program
         Console.WriteLine();
 
         string filePath;
+        bool pause = false;
 
         if (args.Length <= 0)
         {
             Console.Write("FileName: ");
             filePath = Console.ReadLine() ?? string.Empty;
+            pause = true;
         }
-        else if(args.Length == 1)
+        else if (args.Length == 1)
         {
             filePath = args.ElementAtOrDefault(0) ?? string.Empty;
         }
@@ -26,6 +28,8 @@ internal class Program
         {
             filePath = string.Empty;
             Console.WriteLine("Usage: dotLNK_Console <LnkFileNameToAnalyze>");
+            Console.ReadLine();
+            return;
         }
 
         Console.WriteLine();
@@ -36,6 +40,8 @@ internal class Program
         if (File.Exists(filePath) == false)
         {
             Console.WriteLine("File not found.");
+            if(pause)
+                Console.ReadLine();
             return;
         }
 
@@ -48,11 +54,11 @@ internal class Program
         Console.WriteLine("LinkCLSID.IsValid: " + ShellLinkHeader.LinkCLSID.IsValid);
         Console.WriteLine("LinkFlags: " + ShellLinkHeader.LinkFlags.ValuesAsText());
         Console.WriteLine("FileAttributesFlags: " + ShellLinkHeader.FileAttributesFlags.ValuesAsText());
-        Console.WriteLine("CreationTime.DateTime: " + ShellLinkHeader.CreationTime.DateTime.ToUniversalTime());
+        Console.WriteLine("CreationTime.DateTime: " + ShellLinkHeader.CreationTime.DateTimeValue().ToUniversalTime());
         Console.WriteLine("CreationTime.IsZero: " + ShellLinkHeader.CreationTime.IsZero.ToString());
-        Console.WriteLine("AccessTime.DateTime: " + ShellLinkHeader.AccessTime.DateTime.ToUniversalTime());
+        Console.WriteLine("AccessTime.DateTime: " + ShellLinkHeader.AccessTime.DateTimeValue().ToUniversalTime());
         Console.WriteLine("AccessTime.IsZero: " + ShellLinkHeader.AccessTime.IsZero.ToString());
-        Console.WriteLine("WriteTime.DateTime: " + ShellLinkHeader.WriteTime.DateTime.ToUniversalTime());
+        Console.WriteLine("WriteTime.DateTime: " + ShellLinkHeader.WriteTime.DateTimeValue().ToUniversalTime());
         Console.WriteLine("WriteTime.IsZero: " + ShellLinkHeader.WriteTime.IsZero.ToString());
         Console.WriteLine("FileSize.ValueAsText: " + ShellLinkHeader.FileSize.ValueAsText);
         Console.WriteLine("FileSize.Warning: " + ShellLinkHeader.FileSize.Warning);
@@ -70,7 +76,10 @@ internal class Program
         Console.WriteLine("Size: " + LinkTargetIDList.Size.ToString());
         foreach (var item in LinkTargetIDList.IDList.Items())
         {
-            Console.WriteLine(item);
+            if (string.IsNullOrEmpty(item))
+                Console.WriteLine();
+            else
+                Console.WriteLine(item);
         }
         Console.WriteLine();
 
@@ -108,14 +117,33 @@ internal class Program
         Console.WriteLine("--== StringData ==--");
         foreach (var item in StringData.Items())
         {
-            Console.WriteLine($"{item.Item1}: {item.Item2}");
+            if (string.IsNullOrEmpty(item.Item1))
+                Console.WriteLine();
+            else
+                Console.WriteLine($"{item.Item1}: {item.Item2}");
         }
         Console.WriteLine();
 
         Console.WriteLine("--== ExtraData ==--");
         foreach (var item in ExtraData.ExtractEssentialData())
         {
-            Console.WriteLine(item);
+            if (string.IsNullOrEmpty(item.name))
+                Console.WriteLine();
+            else
+                Console.WriteLine($"{item.name}: {item.value}");
         }
+        Console.WriteLine();
+
+        Console.WriteLine("--== ExtraData.TextStrings ==--");
+        foreach (var item in ExtraData.TextStrings())
+        {
+            if (string.IsNullOrEmpty(item))
+                Console.WriteLine();
+            else
+                Console.WriteLine(item);
+        }
+
+        if (pause)
+            Console.ReadLine();
     }
 }
