@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Images\ethical.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\analyze.png" />
+    <None Remove="Images\ethical.ico" />
+    <None Remove="Images\exit.png" />
+    <None Remove="Images\icon.png" />
+    <None Remove="Images\tube.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\analyze.png" />
+    <Resource Include="Images\icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\dotLNK_Library\dotLNK_Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\ethical.ico" />
+    <Resource Include="Images\exit.png" />
+    <Resource Include="Images\tube.png" />
+  </ItemGroup>
+
+</Project>
